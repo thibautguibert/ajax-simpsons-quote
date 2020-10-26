@@ -18,15 +18,35 @@
     <section class="section">
         <div class="container">
             <h1 class="title">Simpson API</h1>
+            <button id="btn">Change Quote</button>
 
-            <div class="content" id="chuck-norris"></div>
+            <div class="content" id="simpsons-quote" style="display: flex; align-items: center"></div>
         </div>
     </section>
 
-    <!-- We need to load axios first! -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"
         integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
-    <script></script>
+    <script>
+        function fetchSimpsonsJSON() {
+            const url = `https://simpsons-quotes-api.herokuapp.com/quotes`;
+            axios.get(url)
+                .then(response => response.data[0]) // DIFFERENT FROM FETCH: response.data instead of response.json()
+                .then(quote => {
+                    const quoteHtml = `
+                <div><h2><strong>${quote.quote}</strong></h2>
+                <p>${quote.character}</p></div>
+                <img src="${quote.image}" />
+              `;
+                    document.querySelector('#simpsons-quote').innerHTML = quoteHtml;
+                });
+        }
+
+        fetchSimpsonsJSON();
+
+        const btn = document.querySelector('#btn');
+        btn.addEventListener('click', fetchSimpsonsJSON);
+
+    </script>
 </body>
 
 </html>
